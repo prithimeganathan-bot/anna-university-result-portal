@@ -1,0 +1,383 @@
+{% extends 'portalapp/base.html' %}
+
+{% block content %}
+<style>
+  .tab-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 0;
+  }
+  .tab-btn {
+    background: #3d3d3d;
+    color: white;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 4px 4px 0 0;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  .tab-btn:hover { background: #2f9999; }
+  .tab-btn.active { background: #2f9999; color: white; }
+
+  .tab-content {
+    background: #c8e6e6;
+    padding: 30px;
+    border-radius: 0 4px 4px 4px;
+    min-height: 400px;
+  }
+
+  .welcome-bar {
+    background: white;
+    padding: 6px 10px;
+    font-size: 13px;
+    color: #333;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .welcome-bar a { color: #2f9999; font-size: 13px; text-decoration: none; }
+
+  .profile-title {
+    text-align: center;
+    color: #2f9999;
+    font-size: 20px;
+    margin-bottom: 25px;
+    font-style: italic;
+  }
+  .profile-table {
+    width: 60%;
+    margin: auto;
+    font-size: 14px;
+    border-collapse: collapse;
+  }
+  .profile-table td { padding: 10px 15px; }
+  .profile-table td:first-child {
+    font-weight: bold;
+    color: #333;
+    width: 40%;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: normal;
+    color: #333;
+    margin-bottom: 25px;
+  }
+
+  .data-table {
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .data-table thead tr {
+    background: #2f9999;
+    color: white;
+    text-align: center;
+  }
+  .data-table th { padding: 10px 8px; border: 1px solid #aaa; }
+  .data-table td { padding: 8px; border: 1px solid #ccc; text-align: center; }
+  .data-table tbody tr:nth-child(even) { background: #e0f0f0; }
+  .data-table tbody tr:nth-child(odd) { background: white; }
+
+  .result-info { font-size: 14px; margin-bottom: 15px; line-height: 2; }
+  .print-link { text-align: right; margin-bottom: 10px; }
+  .print-link a { color: #2f9999; font-size: 14px; text-decoration: none; }
+
+  .session-table {
+    width: 50%;
+    margin: 20px auto 0 auto;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .session-table th {
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid #aaa;
+    text-align: center;
+  }
+  .session-table td {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    text-align: center;
+    background: white;
+  }
+
+  .disclaimer {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #555;
+    text-align: center;
+    font-style: italic;
+  }
+
+  .grievance-form table { width: 60%; margin: auto; font-size: 14px; }
+  .grievance-form td { padding: 10px; }
+  .grievance-form input, .grievance-form textarea, .grievance-form select {
+    width: 100%; padding: 6px; border: 1px solid #aaa; font-size: 13px;
+  }
+</style>
+
+<!-- Welcome bar -->
+<div class="welcome-bar">
+  <span>Welcome {{ student.name }} !!</span>
+  <a href="/logout/">Log out</a>
+</div>
+
+<!-- Tab bar -->
+<div class="tab-bar">
+  <a href="/dashboard/?tab=profile"    class="tab-btn {% if tab == 'profile' %}active{% endif %}">Profile</a>
+  <a href="/dashboard/?tab=schedule"   class="tab-btn {% if tab == 'schedule' %}active{% endif %}">Exam Schedule</a>
+  <a href="/dashboard/?tab=reg"        class="tab-btn {% if tab == 'reg' %}active{% endif %}">Reg.Preview</a>
+  <a href="/dashboard/?tab=assessment" class="tab-btn {% if tab == 'assessment' %}active{% endif %}">Assessment</a>
+  <a href="/dashboard/?tab=results"    class="tab-btn {% if tab == 'results' %}active{% endif %}">Exam Results</a>
+  <a href="/dashboard/?tab=elective"   class="tab-btn {% if tab == 'elective' %}active{% endif %}">Elective</a>
+  <a href="/dashboard/?tab=grievance"  class="tab-btn {% if tab == 'grievance' %}active{% endif %}">Grievance</a>
+</div>
+
+<!-- Tab Content -->
+<div class="tab-content">
+
+  <!-- ── PROFILE ── -->
+  {% if tab == 'profile' %}
+  <h2 class="profile-title">Student Profile</h2>
+  <table class="profile-table">
+    <tr><td>Register Number</td><td>{{ student.register_number }}</td></tr>
+    <tr><td>Name</td><td>{{ student.name }}</td></tr>
+    <tr><td>Institution</td><td>3114 - {{ student.college_name|upper }}</td></tr>
+    <tr><td>Branch</td><td>106 - {{ student.department }}</td></tr>
+  </table>
+
+  <!-- ── EXAM SCHEDULE ── -->
+  {% elif tab == 'schedule' %}
+  <h2 class="section-title">Semester Examination Schedule</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Exam Date</th>
+        <th>Session</th>
+        <th>Semester</th>
+        <th>Subject</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>05-04-2025</td><td>FN</td><td>{{ student.semester }}</td><td>{{ student.regulation }}3151 - Engineering Mathematics</td></tr>
+      <tr><td>08-04-2025</td><td>FN</td><td>{{ student.semester }}</td><td>{{ student.regulation }}3152 - Professional English</td></tr>
+      <tr><td>10-04-2025</td><td>FN</td><td>{{ student.semester }}</td><td>{{ student.regulation }}3251 - Problem Solving and Python</td></tr>
+      <tr><td>14-04-2025</td><td>FN</td><td>{{ student.semester }}</td><td>{{ student.regulation }}3252 - Digital Principles</td></tr>
+      <tr><td>17-04-2025</td><td>FN</td><td>{{ student.semester }}</td><td>{{ student.regulation }}3353 - Engineering Physics</td></tr>
+      <tr><td>21-04-2025</td><td>FN</td><td>{{ student.semester }}</td><td>{{ student.regulation }}3354 - Engineering Chemistry</td></tr>
+    </tbody>
+  </table>
+
+  <table class="session-table" style="margin-top:25px;">
+    <tr><th>Session</th><th>Timing</th></tr>
+    <tr><td>FN</td><td>FN (10 AM - 1 PM)</td></tr>
+    <tr><td>AN</td><td>AN (2 PM - 5 PM)</td></tr>
+    <tr><td>FN (4hrs.)</td><td>FN (10 AM - 2 PM)</td></tr>
+    <tr><td>AN (4hrs.)</td><td>AN (2 PM - 6 PM)</td></tr>
+  </table>
+
+  <p class="disclaimer">
+    Disclaimer: The Schedule published is provisional only. NIC or O/o CoE, AU are not responsible
+    for any inadvertent error that may have crept in the date/schedule being published on the Net.
+  </p>
+
+  <!-- ── REG PREVIEW ── -->
+  {% elif tab == 'reg' %}
+  <h2 class="section-title">Registration Preview</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Subject Code</th>
+        <th>Subject Name</th>
+        <th>Category</th>
+        <th>Semester</th>
+        <th>Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sub in subjects %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ sub.subject_code }}</td>
+        <td style="text-align:left;">{{ sub.subject_name }}</td>
+        <td>Core</td>
+        <td>{{ student.semester }}</td>
+        <td>Regular</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6">No registration data found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- ── ASSESSMENT ── -->
+  {% elif tab == 'assessment' %}
+  <h2 class="section-title">Assessment Details</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Subject Code</th>
+        <th>Subject Name</th>
+        <th>Test 1 (50)</th>
+        <th>Test 2 (50)</th>
+        <th>Model (100)</th>
+        <th>Internal (20)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sub in subjects %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ sub.subject_code }}</td>
+        <td style="text-align:left;">{{ sub.subject_name }}</td>
+        <td>42</td>
+        <td>45</td>
+        <td>88</td>
+        <td><strong>{{ sub.internal_marks }}</strong></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7">No assessment data found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="disclaimer">* Internal marks are calculated based on Test 1, Test 2 and Model Examination.</p>
+
+  <!-- ── EXAM RESULTS ── -->
+  {% elif tab == 'results' %}
+  <div class="print-link"><a href="javascript:window.print()">Print</a></div>
+  <h2 class="section-title">Result for April / May Examination, 2025</h2>
+
+  <div class="result-info">
+    <strong>Register Number :</strong> {{ student.register_number }}<br>
+    <strong>Name :</strong> {{ student.name }}<br>
+    <strong>Branch :</strong> {{ student.department }}
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Semester</th>
+        <th>Subject Code</th>
+        <th>Grade</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sub in subjects %}
+      <tr>
+        <td>0{{ student.semester }}</td>
+        <td>{{ sub.subject_code }}</td>
+        <td><strong>{{ sub.grade }}</strong></td>
+        <td>
+          <strong style="color:{% if sub.result == 'Fail' %}red{% else %}green{% endif %};">
+            {{ sub.result|upper }}
+          </strong>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <br>
+  <div style="text-align:center; padding:10px; font-size:15px; font-weight:bold;
+    color:{% if overall_result == 'PASS' %}green{% else %}red{% endif %};">
+    Overall Result : {{ overall_result }} &nbsp;|&nbsp;
+    Passed : {{ passed }} &nbsp;|&nbsp;
+    Failed : {{ failed }}
+  </div>
+
+  <!-- ── ELECTIVE ── -->
+  {% elif tab == 'elective' %}
+  <h2 class="section-title">Elective Details</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Subject Code</th>
+        <th>Subject Name</th>
+        <th>Type</th>
+        <th>Semester</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>OE{{ student.regulation }}01</td>
+        <td style="text-align:left;">Open Elective I - Environmental Science</td>
+        <td>Open Elective</td>
+        <td>{{ student.semester }}</td>
+        <td style="color:green;"><strong>Registered</strong></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>PE{{ student.regulation }}01</td>
+        <td style="text-align:left;">Professional Elective I - Internet of Things</td>
+        <td>Professional Elective</td>
+        <td>{{ student.semester }}</td>
+        <td style="color:green;"><strong>Registered</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── GRIEVANCE ── -->
+  {% elif tab == 'grievance' %}
+  <h2 class="section-title">Grievance</h2>
+  <div class="grievance-form">
+    <table>
+      <tr>
+        <td><strong>Register Number :</strong></td>
+        <td><input type="text" value="{{ student.register_number }}" readonly style="background:#eee;"></td>
+      </tr>
+      <tr>
+        <td><strong>Subject Code :</strong></td>
+        <td>
+          <select>
+            {% for sub in subjects %}
+            <option>{{ sub.subject_code }} - {{ sub.subject_name }}</option>
+            {% endfor %}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Grievance Type :</strong></td>
+        <td>
+          <select>
+            <option>Mark Entry Error</option>
+            <option>Result Not Published</option>
+            <option>Grade Mismatch</option>
+            <option>Other</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Description :</strong></td>
+        <td><textarea rows="4" placeholder="Describe your grievance here..."></textarea></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <button type="button" style="background:#2f9999; color:white; border:none; padding:8px 25px; cursor:pointer; font-size:13px; margin-top:8px;">
+            Submit Grievance
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  {% endif %}
+
+</div>
+
+{% endblock %}

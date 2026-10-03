@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anna University - COE, Chennai</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #ffffff; }
+
+    .header {
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      border-bottom: 3px solid #2aa9a9;
+    }
+    .header img { height: 65px; }
+    .header-text { text-align: center; flex: 1; }
+    .header-text h1 {
+      color: #1a1a1a;
+      font-size: 24px;
+      font-weight: bold;
+      font-family: 'Times New Roman', serif;
+    }
+    .header-text h2 {
+      color: #1a1a1a;
+      font-size: 15px;
+      font-weight: bold;
+      margin-top: 2px;
+    }
+    .header-text p {
+      color: #333;
+      font-size: 13px;
+      font-style: italic;
+      margin-top: 2px;
+    }
+
+    .main { padding: 25px 30px; max-width: 1150px; margin: auto; }
+
+    .footer {
+      background: #2f9999;
+      color: white;
+      padding: 10px 30px;
+      font-size: 12px;
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <img src="/static/portalapp/au_logo.png" alt="Anna University Logo" onerror="this.style.display='none'">
+    <div class="header-text">
+      <h1>Anna University, Chennai</h1>
+      <h2>Office of the Controller of Examinations</h2>
+      <p>Pre- Examination Monitoring System</p>
+    </div>
+    <img src="/static/portalapp/coe_seal.png" alt="COE Seal" onerror="this.style.display='none'">
+  </div>
+
+  <div class="main">
+    {% block content %}{% endblock %}
+  </div>
+
+  <div class="footer">
+    <span>Designed and developed by: National Informatics Centre, Chennai.</span>
+    <span>Content owned &amp; maintained by Office of the COE, Anna University, Chennai.</span>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+{% extends 'portalapp/base.html' %}
+
+{% block content %}
+<style>
+  .captcha-box {
+    background-color: #4a4a4a;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.18) 1px, transparent 1px);
+    background-size: 6px 6px;
+    padding: 10px;
+    text-align: center;
+    letter-spacing: 4px;
+    font-weight: bold;
+    font-size: 20px;
+    font-style: italic;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  .login-input {
+    width: 100%;
+    padding: 5px 6px;
+    border: 1px solid #999;
+    font-size: 13px;
+    box-sizing: border-box;
+  }
+  .login-box-title {
+    border-bottom: 1px solid #777;
+    padding-bottom: 6px;
+    margin-bottom: 14px;
+    font-size: 16px;
+    color: #3aafaf;
+    font-weight: bold;
+  }
+  .play-link {
+    color: #3aafaf;
+    font-size: 12px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .login-card {
+    background: #4a4a4a;
+    color: white;
+    padding: 18px 20px;
+    width: 320px;
+    box-sizing: border-box;
+  }
+  .login-card table {
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 0 8px;
+  }
+  .login-card td:first-child {
+    width: 50%;
+    padding-right: 8px;
+  }
+</style>
+
+<!-- Welcome banner -->
+<div style="background:#2f9999; color:white; padding:25px; text-align:center; border-radius:2px;">
+  <h2 style="font-size:26px; font-weight:normal;">Welcome to Office of the Controller of Examinations</h2>
+  <p style="font-size:15px; margin-top:6px;">Pre-Examination Monitoring System</p>
+</div>
+
+<br>
+
+<div style="display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start;">
+
+  <!-- Institution / Staff login box -->
+  <div class="login-card">
+    <div class="login-box-title">Institution / Staff login</div>
+    <form method="POST" action="/institution-login/">
+      {% csrf_token %}
+      <table style="font-size:13px;">
+        <tr>
+          <td>Institution / Staff Code:</td>
+          <td><input type="text" name="inst_code" class="login-input" required></td>
+        </tr>
+        <tr>
+          <td>Password:</td>
+          <td><input type="password" name="inst_password" class="login-input" required></td>
+        </tr>
+        <tr>
+          <td>Enter the Captcha
+            <a href="#" class="play-link" id="inst_play">▷ Play</a>
+          </td>
+          <td><input type="text" class="login-input"></td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding-top:6px;">
+            <div class="captcha-box" style="color:#3cb371;" id="inst_captcha">t f m w V U</div>
+          </td>
+        </tr>
+      </table>
+      <br>
+      <a href="#" style="color:#3aafaf; font-size:12px;">Forgot Password</a>
+      <button type="submit" style="float:right; background:#2f9999; color:white; border:none; padding:6px 22px; cursor:pointer; font-size:13px;">Login</button>
+      {% if inst_error %}
+      <p style="color:red; font-size:12px; margin-top:8px; clear:both;">{{ inst_error }}</p>
+      {% endif %}
+    </form>
+  </div>
+
+  <!-- Student login box -->
+  <div class="login-card">
+    <div class="login-box-title">Student login</div>
+    <form method="POST" action="/result/">
+      {% csrf_token %}
+      <table style="font-size:13px;">
+        <tr>
+          <td>Register Number</td>
+          <td><input type="text" name="register_number" class="login-input" required></td>
+        </tr>
+        <tr>
+          <td>Date of Birth [DD-MM-YYYY]</td>
+          <td><input type="date" name="dob" class="login-input" required></td>
+        </tr>
+        <tr>
+          <td>Enter the Captcha
+            <a href="#" class="play-link" id="student_play">▷ Play</a>
+          </td>
+          <td><input type="text" class="login-input"></td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding-top:6px;">
+            <div class="captcha-box" style="color:#d4a017;" id="student_captcha">V t 5 5 4 N</div>
+          </td>
+        </tr>
+      </table>
+      <br>
+      <button type="submit" style="float:right; background:#2f9999; color:white; border:none; padding:6px 22px; cursor:pointer; font-size:13px;">Login</button>
+      {% if error %}
+      <p style="color:red; font-size:12px; margin-top:8px; clear:both;">{{ error }}</p>
+      {% endif %}
+    </form>
+  </div>
+
+  <!-- Attention box -->
+  <div style="flex:1; min-width:260px; background:white; color:#333; padding:0; border:1px solid #2f9999;">
+    <h3 style="background:#2f9999; color:white; padding:8px 10px; font-size:13px; margin:0;">
+      Attention! All Institutions &nbsp; [ <a href="#" style="color:white;">View All</a> ]
+    </h3>
+    <div style="padding:12px; font-size:12px; color:#c0392b; font-weight:bold; line-height:1.8;">
+      *Kind Attention to the Institutions: - Review Results of Nov./Dec. 2025 Examinations are Published.
+      <br><br>
+      *Kind Attention to the Institution :- The results of the April/May 2026 final semester UG (B.E. / B.Tech.) project work is published.
+      <br><br>
+      *Kind Attention to the Institution: - WEB PORTAL IS OPENED FOR HALL TICKET AND ATTENDANCE SHEET (FOR ELIGIBLE CANDIDATES AND FEES PAID COLLEGES ONLY) FOR APRIL/MAY 2026.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function generateCaptcha() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+    let captcha = '';
+    for (let i = 0; i < 6; i++) {
+      captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+      if (i < 5) captcha += ' ';
+    }
+    return captcha;
+  }
+
+  // Generate new captcha on page load
+  document.getElementById('inst_captcha').innerText = generateCaptcha();
+  document.getElementById('student_captcha').innerText = generateCaptcha();
+
+  // Regenerate on clicking the captcha box itself
+  document.getElementById('inst_captcha').addEventListener('click', function() {
+    this.innerText = generateCaptcha();
+  });
+  document.getElementById('student_captcha').addEventListener('click', function() {
+    this.innerText = generateCaptcha();
+  });
+
+  // Regenerate on clicking ▷ Play links
+  document.getElementById('inst_play').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('inst_captcha').innerText = generateCaptcha();
+  });
+  document.getElementById('student_play').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('student_captcha').innerText = generateCaptcha();
+  });
+</script>
+
+{% endblock %}

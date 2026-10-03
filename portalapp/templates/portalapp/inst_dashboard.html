@@ -1,0 +1,287 @@
+{% extends 'portalapp/base.html' %}
+
+{% block content %}
+<style>
+  .tab-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 0;
+  }
+  .tab-btn {
+    background: #3d3d3d;
+    color: white;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 4px 4px 0 0;
+    text-transform: uppercase;
+  }
+  .tab-btn:hover { background: #2f9999; }
+  .tab-btn.active { background: #2f9999; }
+
+  .tab-content {
+    background: #c8e6e6;
+    padding: 30px;
+    border-radius: 0 4px 4px 4px;
+    min-height: 400px;
+  }
+
+  .welcome-bar {
+    background: white;
+    padding: 6px 10px;
+    font-size: 13px;
+    color: #333;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .welcome-bar a { color: #2f9999; font-size: 13px; text-decoration: none; }
+
+  .section-title {
+    text-align: center;
+    font-size: 20px;
+    color: #2f9999;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .data-table {
+    width: 95%;
+    margin: auto;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .data-table thead tr {
+    background: #2f9999;
+    color: white;
+    text-align: center;
+  }
+  .data-table th { padding: 10px 8px; border: 1px solid #aaa; }
+  .data-table td { padding: 8px; border: 1px solid #ccc; text-align: center; }
+  .data-table tbody tr:nth-child(even) { background: #e0f0f0; }
+  .data-table tbody tr:nth-child(odd) { background: white; }
+
+  .info-box {
+    background: white;
+    border: 1px solid #aaa;
+    padding: 20px;
+    width: 60%;
+    margin: auto;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+  .info-box td { padding: 8px 15px; }
+  .info-box td:first-child { font-weight: bold; width: 45%; }
+
+  .notice-box {
+    background: #fff8e1;
+    border-left: 4px solid #f39c12;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: #c0392b;
+    font-weight: bold;
+  }
+</style>
+
+<!-- Welcome bar -->
+<div class="welcome-bar">
+  <span>Welcome Institution {{ inst_code }} !!</span>
+  <a href="/inst-logout/">Log out</a>
+</div>
+
+<!-- Tab bar -->
+<div class="tab-bar">
+  <a href="/inst-dashboard/?tab=home"        class="tab-btn {% if tab == 'home' %}active{% endif %}">Home</a>
+  <a href="/inst-dashboard/?tab=students"    class="tab-btn {% if tab == 'students' %}active{% endif %}">Students</a>
+  <a href="/inst-dashboard/?tab=hallticket"  class="tab-btn {% if tab == 'hallticket' %}active{% endif %}">Hall Ticket</a>
+  <a href="/inst-dashboard/?tab=attendance"  class="tab-btn {% if tab == 'attendance' %}active{% endif %}">Attendance</a>
+  <a href="/inst-dashboard/?tab=results"     class="tab-btn {% if tab == 'results' %}active{% endif %}">Results</a>
+  <a href="/inst-dashboard/?tab=fees"        class="tab-btn {% if tab == 'fees' %}active{% endif %}">Fees</a>
+  <a href="/inst-dashboard/?tab=grievance"   class="tab-btn {% if tab == 'grievance' %}active{% endif %}">Grievance</a>
+</div>
+
+<div class="tab-content">
+
+  <!-- HOME TAB -->
+  {% if tab == 'home' %}
+  <h2 class="section-title">Institution Dashboard</h2>
+
+  <div style="width:70%; margin:auto;">
+    <div class="notice-box">
+      *Kind Attention: Review Results of Nov./Dec. 2025 Examinations are Published. Please verify and confirm student results before the deadline.
+    </div>
+    <div class="notice-box">
+      *Kind Attention: WEB PORTAL IS OPENED FOR HALL TICKET AND ATTENDANCE SHEET (FOR ELIGIBLE CANDIDATES AND FEES PAID COLLEGES ONLY) FOR APRIL/MAY 2026.
+    </div>
+    <div class="notice-box">
+      *Kind Attention: Last date for submitting Grievance for Nov./Dec. 2025 results is 30-08-2026.
+    </div>
+  </div>
+
+  <br>
+  <table class="info-box" style="width:50%; margin:auto;">
+    <tr><td>Institution Code</td><td>{{ inst_code }}</td></tr>
+    <tr><td>Institution Name</td><td>MEENAKSHI COLLEGE OF ENGINEERING</td></tr>
+    <tr><td>Affiliated University</td><td>Anna University, Chennai</td></tr>
+    <tr><td>District</td><td>Chennai</td></tr>
+    <tr><td>Type</td><td>Private</td></tr>
+    <tr><td>Status</td><td style="color:green;"><strong>Active</strong></td></tr>
+  </table>
+
+  <!-- STUDENTS TAB -->
+  {% elif tab == 'students' %}
+  <h2 class="section-title">Registered Students</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Register Number</th>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Semester</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>311422106001</td><td>AAKASH R</td><td>B.E. ECE</td><td>08</td><td style="color:green;">Active</td></tr>
+      <tr><td>2</td><td>311422106002</td><td>ABINAYA S</td><td>B.E. ECE</td><td>08</td><td style="color:green;">Active</td></tr>
+      <tr><td>3</td><td>311422106003</td><td>ARUN KUMAR M</td><td>B.E. ECE</td><td>08</td><td style="color:green;">Active</td></tr>
+      <tr><td>4</td><td>311422106004</td><td>BAVYA P</td><td>B.E. ECE</td><td>08</td><td style="color:green;">Active</td></tr>
+      <tr><td>5</td><td>311422106005</td><td>DEEPAK S</td><td>B.E. ECE</td><td>08</td><td style="color:green;">Active</td></tr>
+      <tr><td>6</td><td>311422106058</td><td>PRITHIYANGARADEVI M</td><td>B.E. ECE</td><td>08</td><td style="color:green;">Active</td></tr>
+      <tr><td>7</td><td>311422106060</td><td>SANJEEV J</td><td>B.E. ECE</td><td>08</td><td style="color:green;">Active</td></tr>
+      <tr><td>8</td><td>311422106061</td><td>VISHALI G</td><td>B.E. ECE</td><td>08</td><td style="color:green;">Active</td></tr>
+    </tbody>
+  </table>
+
+  <!-- HALL TICKET TAB -->
+  {% elif tab == 'hallticket' %}
+  <h2 class="section-title">Hall Ticket Status</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Register Number</th>
+        <th>Name</th>
+        <th>Semester</th>
+        <th>Exam</th>
+        <th>Hall Ticket Status</th>
+        <th>Download</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>311422106001</td><td>AAKASH R</td><td>08</td><td>Apr/May 2026</td><td style="color:green;">Generated</td><td><a href="#" style="color:#2f9999;">Download</a></td></tr>
+      <tr><td>2</td><td>311422106002</td><td>ABINAYA S</td><td>08</td><td>Apr/May 2026</td><td style="color:green;">Generated</td><td><a href="#" style="color:#2f9999;">Download</a></td></tr>
+      <tr><td>3</td><td>311422106003</td><td>ARUN KUMAR M</td><td>08</td><td>Apr/May 2026</td><td style="color:orange;">Pending</td><td>—</td></tr>
+      <tr><td>4</td><td>311422106058</td><td>PRITHIYANGARADEVI M</td><td>08</td><td>Apr/May 2026</td><td style="color:green;">Generated</td><td><a href="#" style="color:#2f9999;">Download</a></td></tr>
+      <tr><td>5</td><td>311422106060</td><td>SANJEEV J</td><td>08</td><td>Apr/May 2026</td><td style="color:green;">Generated</td><td><a href="#" style="color:#2f9999;">Download</a></td></tr>
+    </tbody>
+  </table>
+
+  <!-- ATTENDANCE TAB -->
+  {% elif tab == 'attendance' %}
+  <h2 class="section-title">Attendance Sheet</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Register Number</th>
+        <th>Name</th>
+        <th>Total Classes</th>
+        <th>Attended</th>
+        <th>Percentage</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>311422106001</td><td>AAKASH R</td><td>90</td><td>82</td><td>91.1%</td><td style="color:green;">Eligible</td></tr>
+      <tr><td>2</td><td>311422106002</td><td>ABINAYA S</td><td>90</td><td>78</td><td>86.7%</td><td style="color:green;">Eligible</td></tr>
+      <tr><td>3</td><td>311422106003</td><td>ARUN KUMAR M</td><td>90</td><td>60</td><td>66.7%</td><td style="color:red;">Not Eligible</td></tr>
+      <tr><td>4</td><td>311422106058</td><td>PRITHIYANGARADEVI M</td><td>90</td><td>88</td><td>97.8%</td><td style="color:green;">Eligible</td></tr>
+      <tr><td>5</td><td>311422106060</td><td>SANJEEV J</td><td>90</td><td>75</td><td>83.3%</td><td style="color:green;">Eligible</td></tr>
+    </tbody>
+  </table>
+
+  <!-- RESULTS TAB -->
+  {% elif tab == 'results' %}
+  <h2 class="section-title">Result Summary - Apr/May 2025</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Register Number</th>
+        <th>Name</th>
+        <th>Semester</th>
+        <th>Passed</th>
+        <th>Failed</th>
+        <th>Overall</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>311422106001</td><td>AAKASH R</td><td>08</td><td>7</td><td>0</td><td style="color:green;"><strong>PASS</strong></td></tr>
+      <tr><td>2</td><td>311422106002</td><td>ABINAYA S</td><td>08</td><td>6</td><td>1</td><td style="color:red;"><strong>FAIL</strong></td></tr>
+      <tr><td>3</td><td>311422106003</td><td>ARUN KUMAR M</td><td>08</td><td>7</td><td>0</td><td style="color:green;"><strong>PASS</strong></td></tr>
+      <tr><td>4</td><td>311422106058</td><td>PRITHIYANGARADEVI M</td><td>08</td><td>7</td><td>0</td><td style="color:green;"><strong>PASS</strong></td></tr>
+      <tr><td>5</td><td>311422106060</td><td>SANJEEV J</td><td>08</td><td>5</td><td>2</td><td style="color:red;"><strong>FAIL</strong></td></tr>
+    </tbody>
+  </table>
+
+  <!-- FEES TAB -->
+  {% elif tab == 'fees' %}
+  <h2 class="section-title">Fees Details</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Register Number</th>
+        <th>Name</th>
+        <th>Exam Fee (₹)</th>
+        <th>Payment Date</th>
+        <th>Transaction ID</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>311422106001</td><td>AAKASH R</td><td>1250</td><td>12-03-2026</td><td>TXN20260312001</td><td style="color:green;">Paid</td></tr>
+      <tr><td>2</td><td>311422106002</td><td>ABINAYA S</td><td>1250</td><td>13-03-2026</td><td>TXN20260313002</td><td style="color:green;">Paid</td></tr>
+      <tr><td>3</td><td>311422106003</td><td>ARUN KUMAR M</td><td>1250</td><td>—</td><td>—</td><td style="color:red;">Pending</td></tr>
+      <tr><td>4</td><td>311422106058</td><td>PRITHIYANGARADEVI M</td><td>1250</td><td>10-03-2026</td><td>TXN20260310058</td><td style="color:green;">Paid</td></tr>
+      <tr><td>5</td><td>311422106060</td><td>SANJEEV J</td><td>1250</td><td>14-03-2026</td><td>TXN20260314060</td><td style="color:green;">Paid</td></tr>
+    </tbody>
+  </table>
+
+  <!-- GRIEVANCE TAB -->
+  {% elif tab == 'grievance' %}
+  <h2 class="section-title">Grievance Management</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Register Number</th>
+        <th>Name</th>
+        <th>Subject Code</th>
+        <th>Grievance Type</th>
+        <th>Submitted On</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>311422106002</td><td>ABINAYA S</td><td>CS8501</td><td>Mark Entry Error</td><td>25-07-2026</td><td style="color:orange;">Under Review</td></tr>
+      <tr><td>2</td><td>311422106003</td><td>ARUN KUMAR M</td><td>EC8501</td><td>Grade Mismatch</td><td>26-07-2026</td><td style="color:green;">Resolved</td></tr>
+      <tr>
+        <td colspan="7" style="text-align:center; color:#777; font-style:italic;">
+          No more grievances found.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends 'portalapp/base.html' %}
+
+{% block content %}
+<div style="background:white; padding:20px; border:1px solid #ccc;">
+
+  <h3 style="color:#00008B; border-bottom:2px solid #00008B; padding-bottom:5px;">
+    Examination Result - Student Login
+  </h3>
+  <br>
+
+  <form method="POST" action="/result/">
+    {% csrf_token %}
+    <table style="font-size:14px;">
+      <tr>
+        <td style="padding:8px;"><label>Register Number :</label></td>
+        <td style="padding:8px;">
+          <input type="text" name="register_number"
+                 placeholder="e.g. 311422106058"
+                 style="padding:6px; border:1px solid #999; width:250px;"
+                 required>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:8px;"><label>Date of Birth :</label></td>
+        <td style="padding:8px;">
+          <input type="date" name="dob"
+                 style="padding:6px; border:1px solid #999; width:250px;"
+                 required>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td style="padding:8px;">
+          <button type="submit" style="
+            background:#00008B; color:white; border:none;
+            padding:8px 20px; cursor:pointer; font-size:14px;">
+            Get Result
+          </button>
+          &nbsp;
+          <button type="reset" style="
+            background:#888; color:white; border:none;
+            padding:8px 20px; cursor:pointer; font-size:14px;">
+            Reset
+          </button>
+        </td>
+      </tr>
+    </table>
+  </form>
+
+  {% if found == False %}
+    <div style="background:#ffdddd; border:1px solid red; padding:10px; margin-top:15px; color:red;">
+      ⚠️ {{ error }}
+    </div>
+  {% endif %}
+
+  {% if found %}
+  <br>
+  <hr style="border-color:#00008B;">
+
+  <h3 style="color:#8B0000; margin-bottom:10px;">📋 Student Details</h3>
+  <table style="width:100%; font-size:13px; border-collapse:collapse;">
+    <tr style="background:#e8eaf6;">
+      <td style="padding:6px; border:1px solid #ccc; width:180px;"><strong>Register Number</strong></td>
+      <td style="padding:6px; border:1px solid #ccc;">{{ student.register_number }}</td>
+      <td style="padding:6px; border:1px solid #ccc; width:180px;"><strong>Name</strong></td>
+      <td style="padding:6px; border:1px solid #ccc;">{{ student.name }}</td>
+    </tr>
+    <tr>
+      <td style="padding:6px; border:1px solid #ccc;"><strong>Department</strong></td>
+      <td style="padding:6px; border:1px solid #ccc;">{{ student.department }}</td>
+      <td style="padding:6px; border:1px solid #ccc;"><strong>Semester</strong></td>
+      <td style="padding:6px; border:1px solid #ccc;">{{ student.semester }}</td>
+    </tr>
+    <tr style="background:#e8eaf6;">
+      <td style="padding:6px; border:1px solid #ccc;"><strong>College</strong></td>
+      <td style="padding:6px; border:1px solid #ccc;" colspan="3">{{ student.college_name }}</td>
+    </tr>
+  </table>
+
+  <br>
+
+  <h3 style="color:#8B0000; margin-bottom:10px;">📊 Subject-wise Marks</h3>
+  <table style="width:100%; font-size:13px; border-collapse:collapse;">
+    <thead>
+      <tr style="background:#00008B; color:white; text-align:center;">
+        <th style="padding:8px; border:1px solid #ccc;">S.No</th>
+        <th style="padding:8px; border:1px solid #ccc;">Subject Code</th>
+        <th style="padding:8px; border:1px solid #ccc;">Subject Name</th>
+        <th style="padding:8px; border:1px solid #ccc;">Internal (20)</th>
+        <th style="padding:8px; border:1px solid #ccc;">External (80)</th>
+        <th style="padding:8px; border:1px solid #ccc;">Total (100)</th>
+        <th style="padding:8px; border:1px solid #ccc;">Grade</th>
+        <th style="padding:8px; border:1px solid #ccc;">Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sub in subjects %}
+      <tr style="text-align:center;
+          {% if sub.result == 'Fail' %}background:#ffe0e0;
+          {% elif forloop.counter|divisibleby:2 %}background:#f5f5f5;
+          {% endif %}">
+        <td style="padding:7px; border:1px solid #ddd;">{{ forloop.counter }}</td>
+        <td style="padding:7px; border:1px solid #ddd;">{{ sub.subject_code }}</td>
+        <td style="padding:7px; border:1px solid #ddd; text-align:left;">{{ sub.subject_name }}</td>
+        <td style="padding:7px; border:1px solid #ddd;">{{ sub.internal_marks }}</td>
+        <td style="padding:7px; border:1px solid #ddd;">{{ sub.external_marks }}</td>
+        <td style="padding:7px; border:1px solid #ddd;"><strong>{{ sub.total_marks }}</strong></td>
+        <td style="padding:7px; border:1px solid #ddd;">
+          <strong style="color:{% if sub.grade == 'U' %}red{% else %}green{% endif %}">
+            {{ sub.grade }}
+          </strong>
+        </td>
+        <td style="padding:7px; border:1px solid #ddd;">
+          <span style="color:{% if sub.result == 'Fail' %}red{% else %}green{% endif %}; font-weight:bold;">
+            {{ sub.result }}
+          </span>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <br>
+  <div style="
+    text-align:center; padding:12px;
+    background:{% if overall_result == 'PASS' %}#e8f5e9{% else %}#ffebee{% endif %};
+    border:2px solid {% if overall_result == 'PASS' %}green{% else %}red{% endif %};
+    font-size:16px; font-weight:bold;
+    color:{% if overall_result == 'PASS' %}green{% else %}red{% endif %};">
+    OVERALL RESULT : {{ overall_result }}
+    &nbsp;|&nbsp; Passed: {{ passed }} &nbsp;|&nbsp; Failed: {{ failed }}
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
